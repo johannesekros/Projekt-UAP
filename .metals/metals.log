@@ -97,3 +97,38 @@ java.nio.file.FileSystemNotFoundException: Provider "class" not installed
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 
+maj 05, 2026 2:26:10 EM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+maj 05, 2026 2:28:21 EM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+maj 05, 2026 2:28:36 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 329
+2026.05.05 14:28:46 WARN  no build target for: /Users/johannesekros/UAP Projekt/Projekt-UAP/src/App.java
+2026.05.05 14:28:46 INFO  no build target found for /Users/johannesekros/UAP Projekt/Projekt-UAP/src/App.java. Using fallback presentation compiler.
+2026.05.05 14:28:46 INFO  no build target found for /Users/johannesekros/UAP Projekt/Projekt-UAP/src/App.java. Using fallback presentation compiler.
+2026.05.05 14:28:46 WARN  Running javac-semanticdb failed for file:///Users/johannesekros/UAP%20Projekt/Projekt-UAP/src/App.java. Output:
+
+2026.05.05 14:28:47 INFO  no build target found for /Users/johannesekros/UAP Projekt/Projekt-UAP/src/App.java. Using fallback presentation compiler.
+maj 05, 2026 2:29:52 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 751
+maj 05, 2026 2:30:48 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 980
+maj 05, 2026 2:40:14 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 1707
+maj 05, 2026 2:41:26 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 2058
+maj 05, 2026 2:41:54 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 2266
+maj 05, 2026 2:41:57 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 2320
+2026.05.05 14:48:54 INFO  no build target found for /Users/johannesekros/UAP Projekt/Projekt-UAP/src/App.java. Using fallback presentation compiler.
+maj 05, 2026 2:51:13 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 4196
+maj 05, 2026 2:54:50 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 4984
+maj 05, 2026 3:14:11 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 6289
+maj 05, 2026 3:15:56 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 6825
+maj 05, 2026 3:16:36 EM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+VARNING: Unmatched cancel notification for request id 7166

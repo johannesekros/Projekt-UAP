@@ -5,20 +5,20 @@ public class BinarySearchTree {
     int size;
     private Comparator<Integer> comparator;
 
+    //Vet ej varför vi har två konstruktorer här men det var så i pfk labben jaja
     public BinarySearchTree() {
         comparator = (e1, e2) -> e1.compareTo(e2);
     }
-
     public BinarySearchTree(Comparator<Integer> comparator) {
         this.comparator = comparator;
     }
 
+    //INSERT, lägger till ett element i listan!!!
     public boolean add(Integer e) {
         int oldSize = size;
-        root = add(root, e);
-        return size > oldSize;
+        root = add(root, e); //anropa hjälpmetod
+        return size > oldSize; //checka så den blivit större
     }
-
     private BinaryNode add(BinaryNode node, Integer e) {
         if (node == null) {
             size++;
@@ -36,10 +36,10 @@ public class BinarySearchTree {
         return balance(node);
     }
 
+    //SÖKNING, kollar om ett element finns i listan!!
     public boolean contains(Integer e) {
-        return contains(root, e);
+        return contains(root, e); //anropa hjälpismetod
     }
-
     private boolean contains(BinaryNode node, Integer e) {
         if (node == null) return false;
         int cmp = comparator.compare(e, node.element);
@@ -51,18 +51,52 @@ public class BinarySearchTree {
             return true;
     }
 
+    //REMOVE, tar bort ett element om det finns i listan!!
+    public boolean remove(Integer e) {
+        int oldSize = size;
+        root = remove(root, e); //anroooop av hjälpppppmetod
+        return size < oldSize; //checka så storleken minskat annars gick det inte
+    }
+    private BinaryNode remove(BinaryNode node, Integer e) {
+        if (node == null) return null;
+
+        int cmp = comparator.compare(e, node.element);
+        if (cmp < 0)
+            node.left = remove(node.left, e);
+        else if (cmp > 0)
+            node.right = remove(node.right, e);
+        else {
+            size--;
+            if (node.left == null) return node.right;
+            if (node.right == null) return node.left;
+
+            BinaryNode smallest = findMin(node.right);
+            node.element = smallest.element;
+            size++;
+            node.right = remove(node.right, smallest.element);
+        }
+        updateHeight(node);
+        return balance(node);
+    }
+    //Behövs för borttagningen
+    private BinaryNode findMin(BinaryNode node) {
+        while (node.left != null)
+            node = node.left;
+        return node;
+    }
+
+    //Höjdrelaterade metoder
     private int nodeHeight(BinaryNode n) {
         return n == null ? 0 : n.height;
     }
-
     private void updateHeight(BinaryNode n) {
         n.height = 1 + Math.max(nodeHeight(n.left), nodeHeight(n.right));
     }
-
     private int balanceFactor(BinaryNode n) {
         return nodeHeight(n.left) - nodeHeight(n.right);
     }
 
+    //Privata metoder för balansering av träd
     private BinaryNode balance(BinaryNode n) {
         int bf = balanceFactor(n);
         if (bf > 1) {
@@ -77,7 +111,6 @@ public class BinarySearchTree {
         }
         return n;
     }
-
     private BinaryNode rotateRight(BinaryNode y) {
         BinaryNode x = y.left;
         y.left = x.right;
@@ -86,7 +119,6 @@ public class BinarySearchTree {
         updateHeight(x);
         return x;
     }
-
     private BinaryNode rotateLeft(BinaryNode x) {
         BinaryNode y = x.right;
         x.right = y.left;
@@ -96,19 +128,24 @@ public class BinarySearchTree {
         return y;
     }
 
-    public int height() { return nodeHeight(root); }
+    //Dessa tre talar för sig själva
+    public int height() { 
+        return nodeHeight(root); 
+    }
+    public int size() { 
+        return size; 
+    }
+    public void clear() { 
+        root = null; size = 0; 
+    }
 
-    public int size() { return size; }
-
-    public void clear() { root = null; size = 0; }
-
+    //toString med inorder som ser till att listan skrivs ut enligt sorteringen
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();//Stringbuilder hahaha! Klassiker!
         inorder(root, sb);
         return sb.toString();
     }
-
     private void inorder(BinaryNode node, StringBuilder sb) {
         if (node == null) return;
         inorder(node.left, sb);
@@ -116,6 +153,7 @@ public class BinarySearchTree {
         inorder(node.right, sb);
     }
 
+    //Nodekrafs
     static class BinaryNode {
         Integer element;
         BinaryNode left;
@@ -127,4 +165,3 @@ public class BinarySearchTree {
         }
     }
 }
-

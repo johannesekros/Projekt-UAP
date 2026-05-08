@@ -21,24 +21,46 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         if (args[0].equals("LinkedList")){
-            //Mätningar för LinkedList
+            DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+            int[] data = readFile("randomNumbers/DataSmall.txt");   
+            long start = System.nanoTime();
+            
+            for (int num : data){
+                doubleLinkedList.addLast(num);
+            }
+
+            long elapsed = System.nanoTime() - start;
+            
+            System.out.println("LinkedList" + "," + "Small" + "," + "addLast" + "," + elapsed);
+
+
         } else if (args[0].equals("MinHeap")){
-            //Mätningar för MinHeap
+            MinHeap minHeap = new MinHeap(1000);
+            int[] data = readFile("randomNumbers/DataSmall.txt");
+            
+            long start = System.nanoTime();
+
+            for(int num : data){
+                minHeap.insert(num);
+            }
+
+            long elapsed = System.nanoTime() - start;
+
+            System.out.println("MinHeap" + "," + "Small" + "," + "insert" + "," + elapsed);
+
+
         } else if (args[0].equals("BST")){
             BinarySearchTree bst = new BinarySearchTree();
 
             int[] data = readFile("randomNumbers/DataSmall.txt");
-
-
             long start = System.nanoTime();
-
             for (int num : data){
                 bst.add(num);
             }
 
             long elapsed = System.nanoTime() - start;
 
-            System.out.println("BST" + "," + "Small" + "," + "insert" + "," + elapsed);
+            System.out.println("BST" + "," + "Small" + "," + "add" + "," + elapsed);
 
             
         }

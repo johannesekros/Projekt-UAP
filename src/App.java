@@ -17,22 +17,32 @@ public class App {
                 .mapToInt(Integer::intValue)
                 .toArray();
         }
+
+
     public static void main(String[] args) throws Exception {
-        
-        BinarySearchTree bst = new BinarySearchTree();
-        
+        if (args[0].equals("LinkedList")){
+            //Mätningar för LinkedList
+        } else if (args[0].equals("MinHeap")){
+            //Mätningar för MinHeap
+        } else if (args[0].equals("BST")){
+            BinarySearchTree bst = new BinarySearchTree();
 
-        long start = System.nanoTime();
+            int[] data = readFile("randomNumbers/DataSmall.txt");
 
-        int[] data = readFile("randomNumbers/DataSmall.txt");
 
-        for (int num : data){
-            bst.add(num);
+            long start = System.nanoTime();
+
+            for (int num : data){
+                bst.add(num);
+            }
+
+            long elapsed = System.nanoTime() - start;
+
+            System.out.println("BST" + "," + "Small" + "," + "insert" + "," + elapsed);
+
+            
         }
-
-        long elapsed = System.nanoTime() - start;
-
-        System.out.println("BST" + "," + "Small" + "," + "insert" + "," + elapsed);
+       
     }
 
 

@@ -21,48 +21,117 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         if (args[0].equals("LinkedList")){
-            DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
-            int[] data = readFile("randomNumbers/DataSmall.txt");   
-            long start = System.nanoTime();
-            
-            for (int num : data){
-                doubleLinkedList.addLast(num);
-            }
+            String[] datasets = {"Small", "Medium", "Large"};
+            String[] paths = {
+                    "randomNumbers/DataSmall.txt",
+                    "randomNumbers/DataMedium.txt",
+                    "randomNumbers/DataLarge.txt"
+            };
+            for (int i = 0; i < datasets.length; i++){
+                int[] data = readFile(paths[i]);
+                DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
 
-            long elapsed = System.nanoTime() - start;
+                //Insert
+                long start = System.nanoTime();
+                for (int num : data){
+                    doubleLinkedList.addLast(num);
+
+                }
+                System.out.println("DoubleLinkedList," + datasets[i] + ",insert," + (System.nanoTime() - start));
+
+                //Search
+                start = System.nanoTime();
+                for (int num : data){
+                    doubleLinkedList.search(num);
+                }
+                System.out.println("DoubleLinkedList," + datasets[i] + ",search," + (System.nanoTime() - start));
+                
+                //Delete
+                start = System.nanoTime();
+                for (int num : data){
+                    doubleLinkedList.delete(num);
+                }
+                System.out.println("DoubleLinkedList," + datasets[i] + ",delete," + (System.nanoTime() - start));
+            }            
             
-            System.out.println("LinkedList" + "," + "Small" + "," + "addLast" + "," + elapsed);
+
+
+            
 
 
         } else if (args[0].equals("MinHeap")){
-            MinHeap minHeap = new MinHeap(1000);
-            int[] data = readFile("randomNumbers/DataSmall.txt");
-            
-            long start = System.nanoTime();
+            String[] datasets = {"Small", "Medium", "Large"};
+            String[] paths = {
+                    "randomNumbers/DataSmall.txt",
+                    "randomNumbers/DataMedium.txt",
+                    "randomNumbers/DataLarge.txt"
+            };           
+           
+            for (int i = 0; i < datasets.length; i++){
+                int[] data = readFile(paths[i]);
+                MinHeap minHeap = new MinHeap(data.length);
 
-            for(int num : data){
-                minHeap.insert(num);
+                //Insert
+                long start = System.nanoTime();
+                for (int num : data){
+                    minHeap.insert(num);
+                }
+                System.out.println("MinHeap," + datasets[i] + ",insert," + (System.nanoTime() - start));
+
+
+                //Search
+                start = System.nanoTime();
+                for (int num : data){
+                    minHeap.lookup(num);
+                }
+                System.out.println("MinHeap," + datasets[i] + ",search," + (System.nanoTime() - start));
+
+                //Delete
+                start = System.nanoTime();
+                for (int num : data){
+                    minHeap.delete(num);
+                }
+
+                System.out.println("MinHeap," + datasets[i] + ",delete," + (System.nanoTime() - start));
+
+
             }
-
-            long elapsed = System.nanoTime() - start;
-
-            System.out.println("MinHeap" + "," + "Small" + "," + "insert" + "," + elapsed);
-
 
         } else if (args[0].equals("BST")){
-            BinarySearchTree bst = new BinarySearchTree();
-
-            int[] data = readFile("randomNumbers/DataSmall.txt");
-            long start = System.nanoTime();
-            for (int num : data){
-                bst.add(num);
-            }
-
-            long elapsed = System.nanoTime() - start;
-
-            System.out.println("BST" + "," + "Small" + "," + "add" + "," + elapsed);
-
+            String[] datasets = {"Small", "Medium", "Large"};
+            String[] paths = {
+                    "randomNumbers/DataSmall.txt",
+                    "randomNumbers/DataMedium.txt",
+                    "randomNumbers/DataLarge.txt"
+            };
             
+            for (int i = 0; i < datasets.length; i++){
+                int[] data = readFile(paths[i]);
+                BinarySearchTree bst = new BinarySearchTree();
+                
+                //Insert
+                long start = System.nanoTime();
+                for (int num : data){
+                    bst.add(num);
+                }
+                System.out.println("BST," + datasets[i] + ",insert," + (System.nanoTime() - start));
+
+                //Search
+                start = System.nanoTime();
+                for (int num : data){
+                    bst.contains(num);
+                }
+                
+                System.out.println("BST," + datasets[i] + ",search," + (System.nanoTime() - start));
+
+                //Delete
+                start = System.nanoTime();
+                for (int num : data){
+                    bst.remove(num);
+                }
+                System.out.println("BST," + datasets[i] + ",delete," + (System.nanoTime() - start));
+            }
+  
         }
        
     }

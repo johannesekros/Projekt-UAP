@@ -1,4 +1,3 @@
-package minheap;
 
 public class MinHeap {
     private int[] heap;

@@ -3,76 +3,58 @@ import pandas as pd
 import numpy as np
 import subprocess
 import matplotlib.pyplot as plt
+from scipy import stats
 import io
 
 project_root = Path(__file__).parent.parent
 
-result_bst = subprocess.run(
-    ["java", "-cp", "bin", "App", "BST"], 
-    capture_output=True, 
-    text=True,
-    cwd=project_root 
-    )
-print(result_bst.stdout)
-df_bst = pd.read_csv(io.StringIO(result_bst.stdout), header= None, names=["struktur", "dataset", "operation", "tid"])
+structures = ["BST", "LinkedList", "MinHeap"]
+datasets   = ["Small", "Medium", "Large"]
+operations = ["insert", "search", "delete"]
 
-result_dll = subprocess.run(
-    ["java", "-cp", "bin", "App", "LinkedList"], 
-    capture_output=True, 
-    text=True,
-    cwd= project_root
-    )
-print(result_dll.stdout)
-df_dll = pd.read_csv(io.StringIO(result_dll.stdout), header= None, names=["struktur", "dataset", "operation", "tid"])
+def confidence_interval(data, confidence=0.95):
+    mean    = np.mean(data)
+    std_err = stats.sem(data)
+    return stats.t.interval(confidence=confidence, df=len(data)-1, loc=mean, scale=std_err)
 
+# Samla medelvärden och konfidensintervall
+# results[struktur][dataset][operation] = {"mean": float, "ci": (low, high)}
+results = {s: {d: {o: {"means": []} for o in operations} for d in datasets} for s in structures}
 
-result_minh = subprocess.run(
-    ["java", "-cp", "bin", "App", "MinHeap"], 
-    capture_output=True, 
-    text=True,
-    cwd= project_root
-    )
-print(result_minh.stdout)
-df_minh = pd.read_csv(io.StringIO(result_minh.stdout), header= None, names=["struktur", "dataset", "operation", "tid"])
+for _ in range(10):
+    for structure in structures:
+        result = subprocess.run(
+            ["java", "-cp", "bin", "App", structure],
+            capture_output=True, text=True, cwd=project_root
+        )
+        df = pd.read_csv(io.StringIO(result.stdout), header=None,
+                         names=["struktur", "dataset", "operation", "tid"])
 
+        for dataset in datasets:
+            for operation in operations:
+                mask = (
+                    (df["struktur"]  == structure) &
+                    (df["dataset"]   == dataset)   &
+                    (df["operation"] == operation)
+                )
+                mean = np.mean(df[mask]["tid"])
+                results[structure][dataset][operation]["means"].append(mean)
 
-#Stor dataframe med allt
-df = pd.concat([df_bst, df_dll, df_minh])
+# Plotta ett diagram per operation
+for operation in operations:
+    plt.figure(figsize=(8, 5))
 
-#Filtrerade plottar
-df_insert = df[df["operation"]== "insert"]
-df_search = df[df["operation"] == "search"]
-df_delete = df[df["operation"] == "delete"]
+    for structure in structures:
+        means = [np.mean(results[structure][d][operation]["means"]) for d in datasets]
+        cis   = [confidence_interval(results[structure][d][operation]["means"]) for d in datasets]
+        errors = [(ci[1] - ci[0]) / 2 for ci in cis]
 
-bst_insert = df_insert[df_insert["struktur"]=="BST"]
-x = bst_insert["dataset"]
-y = bst_insert["tid"]
-plt.figure()
-plt.plot(x, y, label=["BST"])
-plt.xlabel("BST")
-plt.ylabel("Tid (ns)")
-plt.title("Insert")
-plt.legend()
-plt.show()
+        plt.errorbar(datasets, means, yerr=errors, label=structure, capsize=5, marker="o")
 
-bst_delete = df_delete[df_delete["struktur"]=="BST"]
-x = bst_insert["dataset"]
-y = bst_insert["tid"]
-plt.figure()
-plt.plot(x, y, label=["BST"])
-plt.xlabel("BST")
-plt.ylabel("Tid (ns)")
-plt.title("Delete")
-plt.legend()
-plt.show()
-
-bst_search= df_search[df_search["struktur"] == "BST"]
-x = bst_insert["dataset"]
-y = bst_insert["tid"]
-plt.figure()
-plt.plot(x, y, label=["BST"])
-plt.xlabel("BST")
-plt.ylabel("Tid (ns)")
-plt.title("Search")
-plt.legend()
-plt.show()
+    plt.title(f"{operation.capitalize()} — jämförelse")
+    plt.xlabel("Dataset")
+    plt.ylabel("Tid (ns)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(project_root / f"plot_{operation}.pdf")
+    plt.show()

@@ -29,29 +29,48 @@ public class App {
             };
             for (int i = 0; i < datasets.length; i++){
                 int[] data = readFile(paths[i]);
-                DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+                
 
                 //Insert
-                long start = System.nanoTime();
-                for (int num : data){
-                    doubleLinkedList.addLast(num);
+                for (int run = 0; run < 600; run++){
+                    DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        doubleLinkedList.addLast(num);
 
-                }
-                System.out.println("DoubleLinkedList," + datasets[i] + ",insert," + (System.nanoTime() - start));
+                    }
+                    System.out.println("DoubleLinkedList," + datasets[i] + ",insert," + (System.nanoTime() - start));
+                }    
 
                 //Search
-                start = System.nanoTime();
-                for (int num : data){
-                    doubleLinkedList.search(num);
+                for (int run = 0; run < 600; run++){
+                    DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+
+                    //Fyll strukturen en gång
+                    for (int num : data){
+                        doubleLinkedList.addLast(num);
+                    }
+
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        doubleLinkedList.search(num);
+                    }
+                    System.out.println("DoubleLinkedList," + datasets[i] + ",search," + (System.nanoTime() - start));
                 }
-                System.out.println("DoubleLinkedList," + datasets[i] + ",search," + (System.nanoTime() - start));
-                
                 //Delete
-                start = System.nanoTime();
-                for (int num : data){
-                    doubleLinkedList.delete(num);
+                for (int run = 0; run < 600; run++){
+                    DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+                    //Fyll strukturen en gång
+                    for (int num : data){
+                        doubleLinkedList.addLast(num);
+                    }
+
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        doubleLinkedList.delete(num);
+                    }
+                    System.out.println("DoubleLinkedList," + datasets[i] + ",delete," + (System.nanoTime() - start));
                 }
-                System.out.println("DoubleLinkedList," + datasets[i] + ",delete," + (System.nanoTime() - start));
             }            
             
 
@@ -69,31 +88,49 @@ public class App {
            
             for (int i = 0; i < datasets.length; i++){
                 int[] data = readFile(paths[i]);
-                MinHeap minHeap = new MinHeap(data.length);
 
                 //Insert
-                long start = System.nanoTime();
-                for (int num : data){
-                    minHeap.insert(num);
+                for (int run = 0; run < 600; run++){
+                    MinHeap minHeap = new MinHeap(data.length);
+                    
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        minHeap.insert(num);
+                    }
+                    System.out.println("MinHeap," + datasets[i] + ",insert," + (System.nanoTime() - start));
                 }
-                System.out.println("MinHeap," + datasets[i] + ",insert," + (System.nanoTime() - start));
-
 
                 //Search
-                start = System.nanoTime();
-                for (int num : data){
-                    minHeap.lookup(num);
-                }
-                System.out.println("MinHeap," + datasets[i] + ",search," + (System.nanoTime() - start));
+                for (int run = 0; run < 600; run++){
+                    MinHeap minHeap = new MinHeap(data.length);   
+                    
+                    //Fyll strukturen en gång
+                    for (int num : data){
+                        minHeap.insert(num);
+                    }
 
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        minHeap.lookup(num);
+                    }
+                    System.out.println("MinHeap," + datasets[i] + ",search," + (System.nanoTime() - start));
+                }
                 //Delete
-                start = System.nanoTime();
-                for (int num : data){
-                    minHeap.delete(num);
+                for (int run = 0; run < 600; run++){
+                    MinHeap minHeap = new MinHeap(data.length);                    
+                    
+                    //Fyll strukturen en gång
+                    for (int num : data){
+                        minHeap.insert(num);
+                    }
+                    
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        minHeap.delete(num);
+                    }
+
+                    System.out.println("MinHeap," + datasets[i] + ",delete," + (System.nanoTime() - start));
                 }
-
-                System.out.println("MinHeap," + datasets[i] + ",delete," + (System.nanoTime() - start));
-
 
             }
 
@@ -107,29 +144,48 @@ public class App {
             
             for (int i = 0; i < datasets.length; i++){
                 int[] data = readFile(paths[i]);
-                BinarySearchTree bst = new BinarySearchTree();
                 
                 //Insert
-                long start = System.nanoTime();
-                for (int num : data){
-                    bst.add(num);
+                for (int run = 0; run < 600; run++){
+                    BinarySearchTree bst = new BinarySearchTree();
+                    
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        bst.add(num);
+                    }
+                    System.out.println("BST," + datasets[i] + ",insert," + (System.nanoTime() - start));
                 }
-                System.out.println("BST," + datasets[i] + ",insert," + (System.nanoTime() - start));
-
                 //Search
-                start = System.nanoTime();
-                for (int num : data){
-                    bst.contains(num);
-                }
-                
-                System.out.println("BST," + datasets[i] + ",search," + (System.nanoTime() - start));
+                for (int run = 0; run < 600; run++){
+                    BinarySearchTree bst = new BinarySearchTree();
+                    
+                    //Fyll strukturen en gång innan mätning.
+                    for (int num : data) {
+                        bst.add(num); //setup utan mätning
+                    }
 
-                //Delete
-                start = System.nanoTime();
-                for (int num : data){
-                    bst.remove(num);
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        bst.contains(num);
+                    }
+                    
+                    System.out.println("BST," + datasets[i] + ",search," + (System.nanoTime() - start));
                 }
-                System.out.println("BST," + datasets[i] + ",delete," + (System.nanoTime() - start));
+                //Delete
+                for (int run = 0; run < 600; run++){
+                    BinarySearchTree bst = new BinarySearchTree();
+                    
+                    //Fyll strukturen en gång
+                    for (int num : data){
+                        bst.add(num);
+                    }
+                    //Här börjar mätningen.
+                    long start = System.nanoTime();
+                    for (int num : data){
+                        bst.remove(num);
+                    }
+                    System.out.println("BST," + datasets[i] + ",delete," + (System.nanoTime() - start));
+                }
             }
   
         }

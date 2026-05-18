@@ -32,18 +32,18 @@ public class App {
                 
 
                 //Insert
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
                     long start = System.nanoTime();
                     for (int num : data){
                         doubleLinkedList.addLast(num);
 
                     }
-                    System.out.println("DoubleLinkedList," + datasets[i] + ",insert," + (System.nanoTime() - start));
+                    System.out.println("LinkedList," + datasets[i] + ",insert," + (System.nanoTime() - start));
                 }    
 
                 //Search
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
 
                     //Fyll strukturen en gång
@@ -55,10 +55,10 @@ public class App {
                     for (int num : data){
                         doubleLinkedList.search(num);
                     }
-                    System.out.println("DoubleLinkedList," + datasets[i] + ",search," + (System.nanoTime() - start));
+                    System.out.println("LinkedList," + datasets[i] + ",search," + (System.nanoTime() - start));
                 }
                 //Delete
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
                     //Fyll strukturen en gång
                     for (int num : data){
@@ -69,7 +69,7 @@ public class App {
                     for (int num : data){
                         doubleLinkedList.delete(num);
                     }
-                    System.out.println("DoubleLinkedList," + datasets[i] + ",delete," + (System.nanoTime() - start));
+                    System.out.println("LinkedList," + datasets[i] + ",delete," + (System.nanoTime() - start));
                 }
             }            
             
@@ -90,7 +90,7 @@ public class App {
                 int[] data = readFile(paths[i]);
 
                 //Insert
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     MinHeap minHeap = new MinHeap(data.length);
                     
                     long start = System.nanoTime();
@@ -101,7 +101,7 @@ public class App {
                 }
 
                 //Search
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     MinHeap minHeap = new MinHeap(data.length);   
                     
                     //Fyll strukturen en gång
@@ -116,7 +116,7 @@ public class App {
                     System.out.println("MinHeap," + datasets[i] + ",search," + (System.nanoTime() - start));
                 }
                 //Delete
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     MinHeap minHeap = new MinHeap(data.length);                    
                     
                     //Fyll strukturen en gång
@@ -146,7 +146,7 @@ public class App {
                 int[] data = readFile(paths[i]);
                 
                 //Insert
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     BinarySearchTree bst = new BinarySearchTree();
                     
                     long start = System.nanoTime();
@@ -156,7 +156,7 @@ public class App {
                     System.out.println("BST," + datasets[i] + ",insert," + (System.nanoTime() - start));
                 }
                 //Search
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     BinarySearchTree bst = new BinarySearchTree();
                     
                     //Fyll strukturen en gång innan mätning.
@@ -172,7 +172,7 @@ public class App {
                     System.out.println("BST," + datasets[i] + ",search," + (System.nanoTime() - start));
                 }
                 //Delete
-                for (int run = 0; run < 600; run++){
+                for (int run = 0; run < 10; run++){
                     BinarySearchTree bst = new BinarySearchTree();
                     
                     //Fyll strukturen en gång

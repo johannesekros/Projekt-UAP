@@ -46,7 +46,7 @@ public class DoubleLinkedList {
             if (current.data == data) {
                 if(current == head){
                     head = head.next;
-                    head.prev = null;
+                    if (head != null) head.prev = null;
                 }  else if (current == tail){
                     tail = tail.prev;
                     tail.next = null;

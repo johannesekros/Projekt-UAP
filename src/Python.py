@@ -17,44 +17,42 @@ def confidence_interval(data, confidence=0.95):
     std_err = stats.sem(data)
     return stats.t.interval(confidence=confidence, df=len(data)-1, loc=mean, scale=std_err)
 
-# Samla medelvärden och konfidensintervall
-# results[struktur][dataset][operation] = {"mean": float, "ci": (low, high)}
-results = {s: {d: {o: {"means": []} for o in operations} for d in datasets} for s in structures}
+# Kör Java en gång per struktur och samla rådata
+dfs = []
+for structure in structures:
+    result = subprocess.run(
+        ["java", "-cp", "bin", "App", structure],
+        capture_output=True, text=True, cwd=project_root
+    )
+    if result.stderr:
+        print(f"=== {structure} stderr ===")
+        print(result.stderr[:500])
+    df = pd.read_csv(io.StringIO(result.stdout), header=None,
+                     names=["struktur", "dataset", "operation", "tid"])
+    dfs.append(df)
 
-for _ in range(10):
-    for structure in structures:
-        result = subprocess.run(
-            ["java", "-cp", "bin", "App", structure],
-            capture_output=True, text=True, cwd=project_root
-        )
-        df = pd.read_csv(io.StringIO(result.stdout), header=None,
-                         names=["struktur", "dataset", "operation", "tid"])
+df_all = pd.concat(dfs, ignore_index=True)
 
-        for dataset in datasets:
-            for operation in operations:
-                mask = (
-                    (df["struktur"]  == structure) &
-                    (df["dataset"]   == dataset)   &
-                    (df["operation"] == operation)
-                )
-                mean = np.mean(df[mask]["tid"])
-                results[structure][dataset][operation]["means"].append(mean)
-
-# Plotta ett diagram per operation
+# En plot per operation med 3 subplots (ett per dataset)
 for operation in operations:
-    plt.figure(figsize=(8, 5))
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    fig.suptitle(f"{operation.capitalize()}", fontsize=14)
 
-    for structure in structures:
-        means = [np.mean(results[structure][d][operation]["means"]) for d in datasets]
-        cis   = [confidence_interval(results[structure][d][operation]["means"]) for d in datasets]
-        errors = [(ci[1] - ci[0]) / 2 for ci in cis]
+    for ax, dataset in zip(axes, datasets):
+        for structure in structures:
+            mask = (
+                (df_all["struktur"]  == structure) &
+                (df_all["dataset"]   == dataset)   &
+                (df_all["operation"] == operation)
+            )
+            tider = df_all[mask]["tid"].values
+            ax.plot(range(len(tider)), tider, label=structure, alpha=0.8)
 
-        plt.errorbar(datasets, means, yerr=errors, label=structure, capsize=5, marker="o")
+        ax.set_title(dataset)
+        ax.set_xlabel("Mätnummer")
+        ax.set_ylabel("Tid (ns)")
+        ax.legend()
 
-    plt.title(f"{operation.capitalize()} — jämförelse")
-    plt.xlabel("Dataset")
-    plt.ylabel("Tid (ns)")
-    plt.legend()
     plt.tight_layout()
     plt.savefig(project_root / f"plot_{operation}.pdf")
     plt.show()
